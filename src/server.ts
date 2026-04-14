@@ -1,7 +1,7 @@
 import { fastify, FastifyError } from "fastify";
 import { fastifyCors } from "@fastify/cors";
 import dotenv from "dotenv";
-import { routes } from "./routes";
+import { routes } from "./routes/index.js";
 
 dotenv.config()
 
@@ -9,9 +9,10 @@ const server = fastify({ logger: true })
 
 const HTTP_PORT = process.env.HTTP_PORT
 const HTTP_HOST = process.env.HTTP_HOST
+
 async function start() {
   await server.register(fastifyCors)
-  await server.register(routes)
+  await server.register(routes, { prefix: "/api/v1"})
   
   server.listen({
     host: HTTP_HOST,
