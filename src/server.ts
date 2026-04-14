@@ -2,10 +2,11 @@ import { fastify, FastifyError } from "fastify";
 import { fastifyCors } from "@fastify/cors";
 import dotenv from "dotenv";
 import { routes } from "./routes/index.js";
+import { ZodTypeProvider } from "fastify-type-provider-zod";
 
 dotenv.config()
 
-const server = fastify({ logger: true })
+const server = fastify({ logger: true }).withTypeProvider<ZodTypeProvider>()
 
 const HTTP_PORT = process.env.HTTP_PORT
 const HTTP_HOST = process.env.HTTP_HOST
