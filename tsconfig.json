@@ -3,20 +3,16 @@
   "_version": "24.0.0",
 
   "compilerOptions": {
-    "lib": [
-      "es2024",
-      "ESNext.Array",
-      "ESNext.Collection",
-      "ESNext.Error",
-      "ESNext.Iterator",
-      "ESNext.Promise"
-    ],
+    "lib": ["es2024"],
     "module": "nodenext",
     "target": "es2024",
-
+    "types": ["node"],
+    
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "moduleResolution": "node16"
-  }
+    "moduleResolution": "nodenext"
+  },
+  "include": ["src"],
+  "exclude": ["node_modules", "dist"]
 }
