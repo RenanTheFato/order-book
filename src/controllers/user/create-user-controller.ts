@@ -58,7 +58,6 @@ export class CreateUserController {
         }
       }
       console.error(error)
-      process.exit(1)
     }
   }
 }
