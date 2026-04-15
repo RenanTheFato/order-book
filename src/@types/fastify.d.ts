@@ -10,7 +10,6 @@ declare module 'fastify' {
       hashed_password: string,
       created_at: Date,
       updated_at: Date,
-    }
-    >
+    }>
   }
 }

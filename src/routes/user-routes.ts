@@ -1,5 +1,5 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import { FastifyTypedInstance } from "../@types/fastify.js";
+import { FastifyTypedInstance } from "../@types/fastify-types.js";
 import { CreateUserController } from "../controllers/user/create-user-controller.js";
 import { AuthUserController } from "../controllers/user/auth-user-controller.js";
 
