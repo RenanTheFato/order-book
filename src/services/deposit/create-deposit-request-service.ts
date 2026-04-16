@@ -2,8 +2,13 @@ import { prisma } from "../../config/prisma.js";
 import { Deposit } from "../../interfaces/deposit.js";
 import { User } from "../../interfaces/user.js";
 
+interface CreateDepositRequest {
+  id: User['id']
+  amount: Deposit['amount']
+}
+
 export class CreateDepositRequestService {
-  async execute({ id }: Pick<User, 'id'>, { amount }: Pick<Deposit, 'amount'>): Promise<Partial<Deposit>> {
+  async execute({ id, amount }: CreateDepositRequest): Promise<Partial<Deposit>> {
     const userIsRegistered = await prisma.users.findFirst({
       where: {
         id

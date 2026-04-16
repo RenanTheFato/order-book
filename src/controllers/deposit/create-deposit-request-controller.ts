@@ -37,7 +37,7 @@ export class CreateDepositRequestController {
 
     try {
       const createDepositRequestService = new CreateDepositRequestService()
-      const depositRequest = await createDepositRequestService.execute({ id }, { amount: amountParsed })
+      const depositRequest = await createDepositRequestService.execute({ id, amount: amountParsed })
 
       return rep.status(201).send({ message: "Deposit Request has been Created With Successful. Confirm your deposit", deposit_request: depositRequest})
     } catch (error: unknown) {
