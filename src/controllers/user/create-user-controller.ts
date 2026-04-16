@@ -51,7 +51,7 @@ export class CreateUserController {
     } catch (error: unknown) {
       if (error instanceof Error) {
         switch (error.message) {
-          case "The email is already in use":
+          case "Email is already in use":
             return rep.status(400).send({ error: error.message })
           default:
             return rep.status(500).send({ error: `Internal Server Error ${error.message}` })
