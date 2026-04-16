@@ -1,4 +1,5 @@
 import { prisma } from "../../config/prisma.js";
+import { BadRequestError } from "../../errors/index.js";
 import { User } from "../../interfaces/user.js";
 
 export class DeleteUserService {
@@ -13,7 +14,7 @@ export class DeleteUserService {
     })
 
     if (!userIsRegistered) {
-      throw new Error("Cannot be possible to delete user")
+      throw new BadRequestError("Cannot be possible to delete user")
     }
 
     await prisma.users.delete({
