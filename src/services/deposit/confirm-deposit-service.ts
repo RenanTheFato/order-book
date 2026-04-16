@@ -21,7 +21,7 @@ export class ConfirmDepositService {
       throw new NotFoundError("Deposit not found")
     }
 
-    if (deposit.requested_by_user != id) {
+    if (deposit.requested_by_user !== id) {
       throw new InvalidOperationError("Invalid operation, you can't confirm this deposit")
     }
 
@@ -38,6 +38,7 @@ export class ConfirmDepositService {
       const updated = await tx.deposits.updateMany({
         where: {
           id: deposit_id,
+          requested_by_user: id,
           status: "PENDING"
         },
         data: {
@@ -48,6 +49,7 @@ export class ConfirmDepositService {
       if (updated.count === 0) {
         throw new BadRequestError("Failed to confirm the deposit")
       }
+
       await tx.users.update({
         where: {
           id,
