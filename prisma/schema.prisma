@@ -18,5 +18,29 @@ model Users {
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
+  deposits Deposits[]
+
+  @@index([id, balance])
   @@map("users")
+}
+
+enum DepositStatus {
+  PENDING
+  SUCCESS
+  CANCELLED
+}
+
+model Deposits {
+  id                String        @id @default(uuid())
+  amount            Decimal       @db.Decimal(10, 2)
+  status            DepositStatus @default(PENDING)
+  requested_by_user String
+
+  user Users @relation(fields: [requested_by_user], references: [id], onDelete: Cascade)
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@index([id, status])
+  @@map("deposits")
 }
