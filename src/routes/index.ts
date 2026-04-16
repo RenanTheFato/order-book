@@ -8,5 +8,5 @@ export async function routes(fastify: FastifyInstance, plugins: FastifyPluginOpt
     })
   })
 
-  await userRoutes(fastify)
+  await fastify.register(userRoutes, { prefix: "/user"})
 }
