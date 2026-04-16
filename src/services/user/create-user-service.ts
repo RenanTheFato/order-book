@@ -1,4 +1,5 @@
 import { prisma } from "../../config/prisma.js";
+import { BadRequestError } from "../../errors/index.js";
 import { User } from "../../interfaces/user.js";
 
 export class CreateUserService{
@@ -10,7 +11,7 @@ export class CreateUserService{
     })
 
     if (verifyEmailInUse) {
-      throw new Error("Email is already in use")
+      throw new BadRequestError("Email is already in use")
     }
 
     const user = await prisma.users.create({

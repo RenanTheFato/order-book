@@ -2,6 +2,7 @@ import { hash } from "bcryptjs";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { z, ZodError } from "zod/v4";
 import { CreateUserService } from "../../services/user/create-user-service.js";
+import { BadRequestError } from "../../errors/index.js";
 
 export class CreateUserController {
   async handle(req: FastifyRequest, rep: FastifyReply) {
@@ -49,15 +50,11 @@ export class CreateUserController {
 
       return rep.status(201).send({ message: "User created successfully", user })
     } catch (error: unknown) {
-      if (error instanceof Error) {
-        switch (error.message) {
-          case "Email is already in use":
-            return rep.status(400).send({ error: error.message })
-          default:
-            return rep.status(500).send({ error: "Internal Server Error" })
-        }
+      if (error instanceof BadRequestError) {
+        return rep.status(400).send({ error: error.message })
       }
       console.error(error)
+      return rep.status(500).send({ error: "Internal Server Error" })
     }
   }
 }
