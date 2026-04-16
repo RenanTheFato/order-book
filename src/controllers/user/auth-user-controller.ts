@@ -37,7 +37,7 @@ export class AuthUserController {
           case "Invalid email or password":
             return rep.status(401).send({ error: error.message })
           default:
-            return rep.status(500).send({ error: `Internal Server Error: ${error.message}` })
+            return rep.status(500).send({ error: "Internal Server Error" })
         }
       }
       console.error(error)

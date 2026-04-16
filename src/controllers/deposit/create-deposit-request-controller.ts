@@ -46,7 +46,7 @@ export class CreateDepositRequestController {
           case "Cannot be possible to proceed, user is not registered":
             return rep.status(400).send({ error: error.message })
           default:
-            return rep.status(500).send({ error: `Internal Server Error: ${error.message}`})
+            return rep.status(500).send({ error: "Internal Server Error"})
         }
       }
       console.log(error)
