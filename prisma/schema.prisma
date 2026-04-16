@@ -8,11 +8,12 @@ datasource db {
 }
 
 model Users {
-  id              String @id @default(uuid())
+  id              String  @id @default(uuid())
   name            String
   last_name       String
-  email           String @unique
+  email           String  @unique
   hashed_password String
+  balance         Decimal @default(0) @db.Decimal(10, 2)
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
