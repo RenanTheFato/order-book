@@ -18,3 +18,10 @@ export class BadRequestError extends Error {
     this.name = this.constructor.name
   }
 }
+
+export class UnauthorizedError extends Error {
+  constructor(message: string) {
+    super(message)
+    this.name = this.constructor.name
+  }
+}
