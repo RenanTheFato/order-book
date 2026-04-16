@@ -1,4 +1,5 @@
 import { prisma } from "../../config/prisma.js";
+import { BadRequestError } from "../../errors/index.js";
 import { Deposit } from "../../interfaces/deposit.js";
 import { User } from "../../interfaces/user.js";
 
@@ -16,7 +17,7 @@ export class CreateDepositRequestService {
     })
 
     if (!userIsRegistered) {
-      throw new Error("Cannot be possible to proceed, user is not registered")
+      throw new BadRequestError("Cannot be possible to proceed, user is not registered")
     }
 
     const depositRequest = await prisma.deposits.create({

@@ -3,6 +3,7 @@ import { FastifyReply, FastifyRequest } from "fastify";
 import { z, ZodError } from "zod/v4";
 import { User } from "../../interfaces/user.js";
 import { CreateDepositRequestService } from "../../services/deposit/create-deposit-request-service.js";
+import { BadRequestError } from "../../errors/index.js";
 
 export class CreateDepositRequestController {
   async hande(req: FastifyRequest, rep: FastifyReply) {
@@ -39,17 +40,13 @@ export class CreateDepositRequestController {
       const createDepositRequestService = new CreateDepositRequestService()
       const depositRequest = await createDepositRequestService.execute({ id, amount: amountParsed })
 
-      return rep.status(201).send({ message: "Deposit Request has been Created With Successful. Confirm your deposit", deposit_request: depositRequest})
+      return rep.status(201).send({ message: "Deposit Request has been Created With Successful. Confirm your deposit", deposit_request: depositRequest })
     } catch (error: unknown) {
-      if (error instanceof Error) {
-        switch (error.message) {
-          case "Cannot be possible to proceed, user is not registered":
-            return rep.status(400).send({ error: error.message })
-          default:
-            return rep.status(500).send({ error: "Internal Server Error"})
-        }
+      if (error instanceof BadRequestError) {
+        return rep.status(400).send({ error: error.message })
       }
       console.log(error)
+      return rep.status(500).send({ error: "Internal Server Error" })
     }
   }
 }
