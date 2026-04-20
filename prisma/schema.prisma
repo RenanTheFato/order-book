@@ -17,7 +17,9 @@ model Users {
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
-  deposits Deposits[]
+  deposits      Deposits[]
+  userPositions UserPositions[]
+  orders        Orders[]
 
   @@index([id, balance])
   @@map("users")
@@ -59,9 +61,98 @@ model Assets {
   last_price    Decimal   @db.Decimal(18, 8)
   last_price_at DateTime?
 
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
+  created_at    DateTime        @default(now())
+  updated_at    DateTime        @updatedAt
+  userPositions UserPositions[]
+  orders        Orders[]
+  trades        Trades[]
 
   @@index([id, ticker])
   @@map("assets")
+}
+
+model UserPositions {
+  id       String @id @default(uuid())
+  user_id  String
+  asset_id String
+
+  quantity        Decimal @db.Decimal(18, 8)
+  quantity_locked Decimal @default(0) @db.Decimal(18, 8)
+  avg_price       Decimal @db.Decimal(18, 8)
+
+  user  Users  @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  asset Assets @relation(fields: [asset_id], references: [id], onDelete: Cascade)
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@unique([user_id, asset_id])
+  @@index([user_id])
+  @@map("user_positions")
+}
+
+enum OrderSide {
+  BUY
+  SELL
+}
+
+enum OrderStatus {
+  OPEN
+  PARTIALLY_FILLED
+  FILLED
+  CANCELLED
+}
+
+enum OrderType {
+  LIMIT
+  MARKET
+}
+
+model Orders {
+  id       String @id @default(uuid())
+  user_id  String
+  asset_id String
+
+  side   OrderSide
+  type   OrderType
+  status OrderStatus @default(OPEN)
+
+  price           Decimal? @db.Decimal(18, 8)
+  quantity        Decimal  @db.Decimal(18, 8)
+  quantity_filled Decimal  @default(0) @db.Decimal(18, 8)
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  user  Users  @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  asset Assets @relation(fields: [asset_id], references: [id], onDelete: Cascade)
+
+  maker_trades Trades[] @relation("MakerOrder")
+  taker_trades Trades[] @relation("TakerOrder")
+
+  @@index([asset_id, side, status, price])
+  @@index([user_id, status])
+  @@map("orders")
+}
+
+model Trades {
+  id       String @id @default(uuid())
+  asset_id String
+
+  maker_order_id String
+  taker_order_id String
+
+  price    Decimal @db.Decimal(18, 8)
+  quantity Decimal @db.Decimal(18, 8)
+
+  executed_at DateTime @default(now())
+
+  asset       Assets @relation(fields: [asset_id], references: [id])
+  maker_order Orders @relation("MakerOrder", fields: [maker_order_id], references: [id])
+  taker_order Orders @relation("TakerOrder", fields: [taker_order_id], references: [id])
+
+  @@index([asset_id, executed_at])
+  @@index([maker_order_id])
+  @@index([taker_order_id])
+  @@map("trades")
 }
