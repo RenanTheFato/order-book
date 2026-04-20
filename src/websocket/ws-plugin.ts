@@ -1,22 +1,19 @@
 import { FastifyTypedInstance } from "../../src/@types/fastify-types.js";
 import fastifyWebSocket from "@fastify/websocket";
+import { createMessageHandler } from "./ws-message-handler.js";
 
 export async function wsPlugin(app: FastifyTypedInstance) {
   await app.register(fastifyWebSocket)
 
   app.get("/ws", { websocket: true }, (socket, request) => {
-    request.log.info("New WS Connection Recived")
+    const { onMessage, onClose } = createMessageHandler(socket, request.log)
 
-    socket.on("message", (rawMessage) => {
-      request.log.info({ rawMessage: rawMessage.toString() }, "Message Recived");
-    });
+    socket.on("message", onMessage)
 
-    socket.on("close", () => {
-      request.log.info("WebSocket Connection Closed");
-    });
+    socket.on("close", onClose)
 
     socket.on("error", (err) => {
-      request.log.error({ err }, "Error on WebSocket");
-    });
+      request.log.error({ err }, "WebSocket Error")
+    })
   })
 }
