@@ -44,3 +44,25 @@ model Deposits {
   @@index([id, status])
   @@map("deposits")
 }
+
+enum AssetStatus {
+  ACTIVE
+  OUT
+}
+
+model Assets {
+  id     String      @id @default(uuid())
+  ticker String      @unique
+  name   String
+  status AssetStatus @default(ACTIVE)
+
+  total_supply  Decimal   @db.Decimal(18, 8)
+  last_price    Decimal   @db.Decimal(18, 8)
+  last_price_at DateTime?
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@index([id, ticker])
+  @@map("assets")
+}
