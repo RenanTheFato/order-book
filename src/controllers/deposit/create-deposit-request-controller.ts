@@ -16,7 +16,22 @@ export class CreateDepositRequestController {
 
     const depositSchema = z.object({
       amount: z.string({ error: "The value entered must be an string" })
-        .min(1, { error: "The amount doesn't meet the minimum number of characters (1)" }),
+        .min(1, { error: "The amount doesn't meet the minimum number of characters (1)" })
+        .refine((val) => !isNaN(Number(val)) && Number.isFinite(Number(val)), { error: "The amount must be a valid number" })
+        .refine((val) => !val.includes(","), { error: "Use a dot instead of a comma as decimal separator" })
+        .refine((val) => {
+          const parts = val.split(".")
+          return parts.length <= 2 && parts.every(part => part.length > 0)
+        }, { error: "The amount must have at most one decimal point with digits on both sides" })
+        .refine((val) => {
+          const parts = val.split(".")
+          return parts.length === 1 || parts[1].length <= 2
+        }, { error: "The amount must have at most 2 decimal places" })
+        .refine((val) => {
+          const integerPart = val.split(".")[0]
+          return integerPart.length <= 8
+        }, { error: "The amount integer part must have at most 8 digits" })
+        .refine((val) => Number(val) > 0, { error: "The deposit must be greater than 0" }),
     })
 
     try {
