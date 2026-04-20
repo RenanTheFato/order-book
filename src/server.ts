@@ -3,6 +3,7 @@ import { fastifyCors } from "@fastify/cors";
 import dotenv from "dotenv";
 import { routes } from "./routes/index.js";
 import { ZodTypeProvider } from "fastify-type-provider-zod";
+import { wsPlugin } from "./websocket/ws-plugin.js";
 
 dotenv.config()
 
@@ -14,6 +15,7 @@ const HTTP_HOST = process.env.HTTP_HOST
 async function start() {
   await server.register(fastifyCors)
   await server.register(routes, { prefix: "/api/v1"})
+  await server.register(wsPlugin)
   
   server.listen({
     host: HTTP_HOST,
