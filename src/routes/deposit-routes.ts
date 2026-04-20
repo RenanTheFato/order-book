@@ -5,6 +5,7 @@ import { CreateDepositRequestController } from "../controllers/deposit/create-de
 import { ConfirmDepositController } from "../controllers/deposit/confirm-deposit-controller.js";
 import { CancelDepositController } from "../controllers/deposit/cancel-deposit-controller.js";
 import { GetDepositController } from "../controllers/deposit/get-deposit-controller.js";
+import { ListDepositsController } from "../controllers/deposit/list-deposits-controller.js";
 
 export async function depositRoutes(fastify: FastifyTypedInstance) {
   fastify.post("/request-deposit", { preHandler: [Auth] }, async (req: FastifyRequest, rep: FastifyReply) => {
@@ -21,5 +22,9 @@ export async function depositRoutes(fastify: FastifyTypedInstance) {
 
   fastify.get("/view/:deposit_id", { preHandler: [Auth] }, async (req: FastifyRequest, rep: FastifyReply) => {
     return new GetDepositController().handle(req, rep)
+  })
+
+  fastify.get("/list", { preHandler: [Auth] }, async (req: FastifyRequest, rep: FastifyReply) => {
+    return new ListDepositsController().handle(req, rep)
   })
 }
