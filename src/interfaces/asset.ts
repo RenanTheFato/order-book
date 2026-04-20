@@ -8,7 +8,7 @@ export interface Asset {
   status: AssetStatus,
   total_supply: Decimal,
   last_price: Decimal,
-  last_price_at?: Date,
+  last_price_at?: Date | null,
   created_at: Date,
   updated_at: Date
 }
