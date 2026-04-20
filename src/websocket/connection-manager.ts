@@ -57,3 +57,5 @@ class WebSocketConnectionManager {
     }
   }
 }
+
+export const connectionManager = new WebSocketConnectionManager()
