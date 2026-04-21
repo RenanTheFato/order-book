@@ -3,9 +3,12 @@ import { FastifyReply, FastifyRequest } from "fastify";
 import { z, ZodError } from "zod/v4";
 import { CreateAssetService } from "../../services/asset/create-asset-service.js";
 import { BadRequestError } from "../../errors/index.js";
+import { User } from "../../interfaces/user.js";
 
 export class CreateAssetController {
   async handle(req: FastifyRequest, rep: FastifyReply) {
+    const { id } = req.user as Pick<User, 'id'>
+
     const assetSchema = z.object({
       name: z.string({ error: "The value must be an string for name" })
         .min(2, ({ error: "The name doesn't meet the minimum number of characters (2)" }))
@@ -73,7 +76,7 @@ export class CreateAssetController {
 
     try {
       const createAssetService = new CreateAssetService()
-      const asset = await createAssetService.execute({ name, ticker, total_supply: totalSupplyParsed, last_price: lastPriceParsed })
+      const asset = await createAssetService.execute({ id, name, ticker, total_supply: totalSupplyParsed, last_price: lastPriceParsed })
 
       return rep.status(201).send({ message: "Asset created successfully", asset })
     } catch (error: unknown) {
