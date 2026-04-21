@@ -48,11 +48,20 @@ class WebSocketConnectionManager {
     }
   }
 
+  hasSubscribers(channel: string): boolean {
+    for (const client of this.clients.values()) {
+      if (client.subs.has(channel) && client.socket.readyState === 1) {
+        return true
+      }
+    }
+    return false
+  }
+
   sendToUser(user_id: string, payload: unknown): void {
-    const message = JSON.stringify(payload);
+    const message = JSON.stringify(payload)
     for (const client of this.clients.values()) {
       if (client.user_id === user_id && client.socket.readyState === 1) {
-        client.socket.send(message);
+        client.socket.send(message)
       }
     }
   }
