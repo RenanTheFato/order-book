@@ -8,7 +8,7 @@ export interface Order {
   side: OrderSide,
   type: OrderType,
   status: OrderStatus,
-  price: Decimal | null,
+  price: Decimal | null | undefined,
   quantity: Decimal,
   quantity_filled: Decimal,
   created_at: Date,
