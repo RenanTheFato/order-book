@@ -28,8 +28,8 @@ export function createMessageHandler(socket: WebSocket, log: FastifyBaseLogger) 
 
   function handleAuth(token: string) {
     try {
-      const decoded = jwt.verify(token, String(process.env.JWT_SECRET)) as { sub: string }
-      state.user_id = decoded.sub
+      const decoded = jwt.verify(token, String(process.env.JWT_SECRET)) as { id: string }
+      state.user_id = decoded.id
       state.authenticated = true
 
       state.connection = connectionManager.add(state.user_id, socket)
@@ -70,8 +70,9 @@ export function createMessageHandler(socket: WebSocket, log: FastifyBaseLogger) 
         return
       }
       fullChannel = `${channel}:${asset_id}`
+    } else {
+      fullChannel = `${channel}:${state.user_id}`
     }
-    fullChannel = `${channel}:${state.user_id}`
 
     connectionManager.unsubscribe(state.connection!, fullChannel)
     send(socket, { event: "unsubscribed", channel: fullChannel })
