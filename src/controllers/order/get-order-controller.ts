@@ -4,7 +4,7 @@ import { Order } from "../../interfaces/order.js";
 import { GetOrderService } from "../../services/order/get-order-service.js";
 import { InvalidOperationError, NotFoundError } from "../../errors/index.js";
 
-export class GetOderController {
+export class GetOrderController {
   async handle(req: FastifyRequest, rep: FastifyReply) {
     const { id } = req.user as Pick<User, 'id'>
     const { order_id } = req.params as { order_id: Order['id'] }
