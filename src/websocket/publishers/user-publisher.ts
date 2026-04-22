@@ -31,7 +31,7 @@ export function publishPositionUpdate(user_id: string, position: { asset_id: str
 }
 
 export function publishBalanceUpdate(user_id: string, balance: Decimal): void {
-  const channel = `positions:${user_id}`
+  const channel = `balance:${user_id}`
   console.log(`[publishBalanceUpdate] channel: ${channel}, hasSubscribers: ${connectionManager.hasSubscribers(channel)}`)
   if (!connectionManager.hasSubscribers(channel)) return
 

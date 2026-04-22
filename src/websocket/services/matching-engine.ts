@@ -4,6 +4,7 @@ import { Order } from "../../interfaces/order.js";
 import { publishTrade } from "../publishers/trade-publisher.js";
 import { publishOrderBookUpdate } from "../publishers/order-book-publisher.js";
 import { publishBalanceUpdate, publishOrderUpdate, publishPositionUpdate } from "../../websocket/publishers/user-publisher.js";
+import { publishPriceUpdate } from "../publishers/price-publisher.js";
 
 export class MatchingEngine {
   async match(order: Order, reservedPrice: Decimal): Promise<void> {
@@ -34,6 +35,7 @@ export class MatchingEngine {
       totalSpent = totalSpent.add(tradePrice.mul(fillQuantity))
 
       publishTrade(trade)
+      publishPriceUpdate(order.asset_id, tradePrice)
 
       await publishOrderBookUpdate(order.asset_id, [
         { price: tradePrice, side: makerOrder.side },

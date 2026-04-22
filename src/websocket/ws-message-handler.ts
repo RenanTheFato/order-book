@@ -10,7 +10,7 @@ interface handler {
   user_id: string | null
 }
 
-const ASSET_CHANNELS = new Set(["order-book", "trades"])
+const ASSET_CHANNELS = new Set(["order-book", "trades", "price"])
 const PRIVATE_CHANNELS = new Set(["orders", "positions"])
 
 function send(socket: WebSocket, payload: unknown) {

@@ -7,12 +7,12 @@ const clientMessageSchema = z.discriminatedUnion("action", [
   }),
   z.object({
     action: z.literal("subscribe"),
-    channel: z.enum(["order-book", "trades", "orders", "positions"]),
+    channel: z.enum(["order-book", "trades", "orders", "price", "positions"]),
     asset_id: z.uuid().optional()
   }),
   z.object({
     action: z.literal("unsubscribe"),
-    channel: z.enum(["order-book", "trades", "orders", "positions"]),
+    channel: z.enum(["order-book", "trades", "orders", "price", "positions"]),
     asset_id: z.uuid().optional()
   }),
   z.object({
