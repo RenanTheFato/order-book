@@ -107,7 +107,7 @@ export function createMessageHandler(socket: WebSocket, log: FastifyBaseLogger) 
     }
 
     if (parsed.action === "unsubscribe") {
-      handleSubscribe(parsed.channel, parsed.asset_id)
+      handleUnsubscribe(parsed.channel, parsed.asset_id)
       return
     }
   }
