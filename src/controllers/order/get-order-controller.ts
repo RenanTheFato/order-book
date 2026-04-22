@@ -30,7 +30,7 @@ export class GetOderController {
         return rep.status(403).send({ error: error.message })
       }
       console.error(error)
-      return rep.status(403).send({ error: "Internal Server Error" })
+      return rep.status(500).send({ error: "Internal Server Error" })
     }
   }
 }
