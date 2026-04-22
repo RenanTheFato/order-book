@@ -40,7 +40,7 @@ export class MatchingEngine {
       ])
 
       const takerNewFilled = quantityFilled
-      const takerStatus = takerNewFilled.gte(order.quantity) ? "FILLED" : "PARTIALLY_FILLED"
+      const takerStatus = takerNewFilled.gte(order.quantity) ? "FILLED" : ""
 
       publishOrderUpdate(order.user_id, {
         id: order.id,
