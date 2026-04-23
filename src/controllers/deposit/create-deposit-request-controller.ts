@@ -6,7 +6,7 @@ import { CreateDepositRequestService } from "../../services/deposit/create-depos
 import { BadRequestError } from "../../errors/index.js";
 
 export class CreateDepositRequestController {
-  async hande(req: FastifyRequest, rep: FastifyReply) {
+  async handle(req: FastifyRequest, rep: FastifyReply) {
 
     const { id } = req.user as Pick<User, 'id'>
 

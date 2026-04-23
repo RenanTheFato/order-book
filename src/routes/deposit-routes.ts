@@ -9,7 +9,7 @@ import { ListDepositsController } from "../controllers/deposit/list-deposits-con
 
 export async function depositRoutes(fastify: FastifyTypedInstance) {
   fastify.post("/request-deposit", { preHandler: [Auth] }, async (req: FastifyRequest, rep: FastifyReply) => {
-    return new CreateDepositRequestController().hande(req, rep)
+    return new CreateDepositRequestController().handle(req, rep)
   })
 
   fastify.post("/confirm/:deposit_id", { preHandler: [Auth] }, async (req: FastifyRequest, rep: FastifyReply) => {
